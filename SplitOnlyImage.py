@@ -8,7 +8,7 @@ class splitbase():
     def __init__(self,
                  srcpath,
                  dstpath,
-                 gap=100,
+                 gap=200,
                  subsize=1024,
                  ext='.png'):
         self.srcpath = srcpath
@@ -61,8 +61,9 @@ class splitbase():
         imagelist = util.GetFileFromThisRootDir(self.srcpath)
         imagenames = [util.custombasename(x) for x in imagelist if (util.custombasename(x) != 'Thumbs')]
         for name in imagenames:
+            print(name)
             self.SplitSingle(name, rate, self.ext)
 if __name__ == '__main__':
-    split = splitbase(r'example/images',
-                      r'example/imagesSplit')
+    split = splitbase('/media/yanggang/data/DOTA/test/images',
+                      '/media/yanggang/data/DOTA_SPLIT/test/images')
     split.splitdata(1)

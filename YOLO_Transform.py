@@ -91,9 +91,12 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
                 num_gt = num_gt + 1  # 为当前有效gt计数
                 poly = obj['poly']  # poly=[(x1,y1),(x2,y2),(x3,y3),(x4,y4)]
                 poly = np.float32(np.array(poly))
+                clsname = obj['name']
                 # 四点坐标归一化
+
                 poly[:, 0] = poly[:, 0]/img_w
                 poly[:, 1] = poly[:, 1]/img_h
+
 
                 rect = cv2.minAreaRect(poly)  # 得到最小外接矩形的（中心(x,y), (宽,高), 旋转角度）
                # box = np.float32(cv2.boxPoints(rect))  # 返回rect四个点的值
@@ -107,7 +110,7 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
                 trans_data = cvminAreaRect2longsideformat(c_x, c_y, w, h, theta)
                 if not trans_data:
                     if theta != 90:  # Θ=90说明wh中有为0的元素，即gt信息不完整，无需提示异常，直接删除
-                        print('opencv表示法转长边表示法出现异常,已将第%d个box排除,问题出现在该图片中:%s' % (i, img_fullname))
+                        print('opencv表示法转长边表示法出现异常,已将第%d个box排除,问题出现在该图片中:%s,classname: %s' % (i, img_fullname,clsname))
                     num_gt = num_gt - 1
                     continue
                 else:
@@ -117,7 +120,7 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
                 bbox = np.array((c_x, c_y, longside, shortside))
 
                 if (sum(bbox <= 0) + sum(bbox[:2] >= 1) ) >= 1:  # 0<xy<1, 0<side<=1
-                    print('bbox[:2]中有>= 1的元素,bbox中有<= 0的元素,已将第%d个box排除,问题出现在该图片中:%s' % (i, img_fullname))
+                    print('bbox[:2]中有>= 1的元素,bbox中有<= 0的元素,已将第%d个box排除,问题出现在该图片中:%s, classname: %s' % (i, img_fullname,clsname))
                     print('出问题的longside形式数据:[%.16f, %.16f, %.16f, %.16f, %.1f]' % (c_x, c_y, longside, shortside, theta_longside))
                     num_gt = num_gt - 1
                     continue
@@ -253,6 +256,7 @@ def drawLongsideFormatimg(imgpath, txtpath, dstpath, extractclassname, thickness
                              color=colors[int(class_index)],
                              thickness=thickness)
         cv2.imwrite(img_savename, img)
+        print(img_fullname + " drawed")
 
     # time.sleep()
 
@@ -299,12 +303,12 @@ def delete(imgpath, txtpath):
 if __name__ == '__main__':
     ## an example
 
-    dota2LongSideFormat('./DOTA_demo/images',
-                        './DOTA_demo/labelTxt',
-                        './DOTA_demo/yolo_labels',
+    dota2LongSideFormat('/media/yanggang/data/DOTA_SPLIT/train/images',
+                        '/media/yanggang/data/DOTA_SPLIT/train/labels',
+                        '/media/yanggang/data/DOTA_SPLIT/train/yolo_labels',
                         util.classnames_v1_5)
 
-    drawLongsideFormatimg(imgpath='DOTA_demo/images',
-                          txtpath='DOTA_demo/yolo_labels',
-                          dstpath='DOTA_demo/draw_longside_img',
+    drawLongsideFormatimg(imgpath='/media/yanggang/data/DOTA_SPLIT/train/images',
+                          txtpath='/media/yanggang/data/DOTA_SPLIT/train/yolo_labels',
+                          dstpath='/media/yanggang/data/DOTA_SPLIT/train/draw_longside_img',
                           extractclassname=util.classnames_v1_5)

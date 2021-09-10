@@ -115,7 +115,7 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
 
                 bbox = np.array((c_x, c_y, longside, shortside)).astype(np.int)
 
-                if (c_x > img_w) or (c_y > img_h) or (c_x < 0) or (c_y < 0) or (longside < 0) or (shortside < 0):  # 0<xy<1, 0<side<=1
+                if (c_x > img_w) or (c_y > img_h) or (c_x < 0) or (c_y < 0) or (longside <= 0) or (shortside <= 0):  # 0<xy<1, 0<side<=1
                     print('bbox[:2]中有>= 1的元素,bbox中有<= 0的元素,已将第%d个box排除,问题出现在该图片中:%s, classname: %s' % (i, img_fullname,clsname))
                     print('出问题的longside形式数据:[%.16f, %.16f, %.16f, %.16f, %.1f]' % (c_x, c_y, longside, shortside, theta_longside))
                     num_gt = num_gt - 1
@@ -142,15 +142,20 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
                         c_x, c_y, longside, shortside, theta_longside))
                 outline = ','.join(list(map(str, bbox))) + ',' + str(id) + ',' + str(theta_label) + ' '
                 labels += outline
-            f_out.write(labels + '\n')  # 写入txt文件中并加上换行符号 \n
-
+            if num_gt > 0:
+                f_out.write(labels + '\n')  # 写入txt文件中并加上换行符号 \n
+            else:
+                os.remove(img_fullname)
+                os.remove(fullname)
+                print('%s 图片对应的txt不存在有效目标,已删除对应图片与txt' % img_fullname)
+"""
         if num_gt == 0:
-            os.remove(os.path.join(dstpath, name + '.txt'))  #
+            #os.remove(os.path.join(dstpath, name + '.txt'))  #
             os.remove(img_fullname)
             os.remove(fullname)
             print('%s 图片对应的txt不存在有效目标,已删除对应图片与txt' % img_fullname)
     print('已完成文件夹内DOTA数据形式到长边表示法的转换')
-
+"""
 
 def cvminAreaRect2longsideformat(x_c, y_c, width, height, theta):
     '''
@@ -252,6 +257,7 @@ def drawLongsideFormatimg(imgpath, txtpath, dstpath, extractclassname, thickness
             clsIndex = clses[j]
             rect = longsideformat2cvminAreaRect(poly[0],poly[1],poly[2],poly[3],thelta_longside[j]-179.9)
             poly = np.float32(cv2.boxPoints(rect))
+            poly = poly.astype(np.int)
             cv2.drawContours(image=img,
                              contours=[poly],
                              contourIdx=-1,
@@ -259,42 +265,6 @@ def drawLongsideFormatimg(imgpath, txtpath, dstpath, extractclassname, thickness
                              thickness=thickness)
         cv2.imwrite(img_savename, img)
 
-
-
-
-"""
-    for fullname in filelist:  # fullname='/.../P000?.txt'
-        objects = util.parse_longsideformat(fullname)
-        '''
-        objects[i] = [classid, x_c_normalized, y_c_normalized, longside_normalized, shortside_normalized, theta]
-        '''
-        name = os.path.splitext(os.path.basename(fullname))[0]  # name='P000?'
-        img_fullname = os.path.join(imgpath, name + '.png')  # img_fullname='/.../P000?.png'
-        img_savename = os.path.join(dstpath, name + '_.png')  # img_fullname='/.../_P000?.png'
-        img = Image.open(img_fullname)  # 图像被打开但未被读取
-        img_w, img_h = img.size
-        img = cv2.imread(img_fullname)  # 读取图像像素
-        for i, obj in enumerate(objects):
-            # obj = [classid, x_c_normalized, y_c_normalized, longside_normalized, shortside_normalized, float:0-179]
-            class_index = obj[0]
-            # rect=[(x_c,y_c),(w,h),Θ] Θ:flaot[0-179]  -> (-180,0)
-            rect = longsideformat2cvminAreaRect(obj[1], obj[2], obj[3], obj[4], (obj[5]-179.9))
-            # poly = [(x1,y1),(x2,y2),(x3,y3),(x4,y4)]
-            poly = np.float32(cv2.boxPoints(rect))  # 返回rect对应的四个点的值 normalized
-
-            # 四点坐标反归一化 取整
-            poly[:, 0] = poly[:, 0]
-            poly[:, 1] = poly[:, 1]
-            poly = np.int0(poly)
-
-            # 画出来
-            cv2.drawContours(image=img,
-                             contours=[poly],
-                             contourIdx=-1,
-                             color=colors[int(class_index)],
-                             thickness=thickness)
-        cv2.imwrite(img_savename, img)
-"""
     # time.sleep()
 
 def longsideformat2cvminAreaRect(x_c, y_c, longside, shortside, theta_longside):
@@ -340,12 +310,12 @@ def delete(imgpath, txtpath):
 if __name__ == '__main__':
     ## an example
 
-    dota2LongSideFormat('./example_split/images',
-                        './example_split/labelTxt',
-                        './example_split/yolo_labels',
+    dota2LongSideFormat('/media/yanggang/data/DOTA_SPLIT/train/images',
+                        '/media/yanggang/data/DOTA_SPLIT/train/labels',
+                        '/media/yanggang/data/DOTA_SPLIT/train/yolox_labels',
                         util.classnames_v1_5)
 
-    drawLongsideFormatimg(imgpath='./example_split/images',
-                          txtpath='./example_split/yolo_labels/train2021.txt',
-                          dstpath='./example_split/draw_longside_img',
+    drawLongsideFormatimg(imgpath='/media/yanggang/data/DOTA_SPLIT/train/images',
+                          txtpath='/media/yanggang/data/DOTA_SPLIT/train/yolox_labels/train2021.txt',
+                          dstpath='/media/yanggang/data/DOTA_SPLIT/train/drawed_images',
                           extractclassname=util.classnames_v1_5)
