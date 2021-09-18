@@ -317,5 +317,5 @@ if __name__ == '__main__':
 
     drawLongsideFormatimg(imgpath='/media/yanggang/data/DOTA_SPLIT/train/images',
                           txtpath='/media/yanggang/data/DOTA_SPLIT/train/yolox_labels/train2021.txt',
-                          dstpath='/media/yanggang/data/DOTA_SPLIT/train/drawed_images',
+                          dstpath='/media/yanggang/data/DOTA_SPLIT/train/drawed_yolox_images',
                           extractclassname=util.classnames_v1_5)
