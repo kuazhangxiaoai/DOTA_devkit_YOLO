@@ -151,7 +151,7 @@ def mergebase(srcpath, dstpath, nms):
                 rate = re.findall(pattern2, subname)[0]  # 找到该subname分割图片时的分割rate (resize rate before cut)
 
                 confidence = splitline[1]
-                poly = list(map(float, splitline[2:]))  # 每个元素映射为浮点数 再放入列表中
+                poly = list(map(float, splitline[2:-1]))  # 每个元素映射为浮点数 再放入列表中
                 origpoly = poly2origpoly(poly, x, y, rate)  # 将目标位置信息resize 恢复成原图的poly坐标
                 det = origpoly  # shape(8)
                 det.append(confidence)  # [poly, confidence]
@@ -194,5 +194,5 @@ def mergebypoly(srcpath, dstpath):
               py_cpu_nms_poly)
 if __name__ == '__main__':
     # see demo for example
-    mergebypoly(r'ResultMerge_example', r'ResultMerge_example_result')
+    mergebypoly('/home/yanggang/data/DOTA_SPLIT/val/merged/', r'ResultMerge_example_result')
     # mergebyrec()

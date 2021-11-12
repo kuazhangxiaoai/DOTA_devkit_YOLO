@@ -20,7 +20,7 @@ def _isArrayLike(obj):
 class DOTA:
     def __init__(self, basepath):
         self.basepath = basepath
-        self.labelpath = os.path.join(basepath, 'labelTxt')
+        self.labelpath = os.path.join(basepath, 'labels')
         self.imagepath = os.path.join(basepath, 'images')
         self.imgpaths = util.GetFileFromThisRootDir(self.labelpath)
         self.imglist = [util.custombasename(x) for x in self.imgpaths]
@@ -116,11 +116,11 @@ class DOTA:
         return imgs
 
 if __name__ == '__main__':
-    examplesplit = DOTA(r'./DOTA_demo')  # (r'./example')
+    examplesplit = DOTA('/home/yanggang/data/DOTA/val')  # (r'./example')
     imgids = examplesplit.getImgIds(catNms=['small-vehicle'])  # 获取包含该类名的所有图片id eg:['P1088']
     img = examplesplit.loadImgs(imgids)  # 获取对应id图片所对应的small-vehicle张量数组
     for imgid in imgids:
-        imgid = 'P0003'  #图片名称
+        imgid = 'P1179'  #图片名称
         anns = examplesplit.loadAnns(imgId=imgid)  # 加载对应id图片的labels相关信息
         '''
         anns =

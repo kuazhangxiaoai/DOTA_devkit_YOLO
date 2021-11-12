@@ -261,19 +261,19 @@ def voc_eval(detpath,
 
 def main():
 
-    detpath = r'/home/test/Persons/hukaixuan/DOTA_devkit-master/evaluation_example/result_classname/Task1_{:s}.txt'
-    annopath = r'/home/test/Persons/hukaixuan/DOTA_devkit-master/evaluation_example/row_DOTA_labels/{:s}.txt'
-    imagesetfile = r'/home/test/Persons/hukaixuan/DOTA_devkit-master/evaluation_example/imgnamefile.txt'
+    detpath = '/home/yanggang/PyCharmWorkspace/DOTA_devkit_YOLO/ResultMerge_example_result/{:s}.txt'
+    annopath = '/home/yanggang/data/DOTA/val/labels/{:s}.txt'
+    imagesetfile = '/home/yanggang/data/DOTA/val/valset.txt'
 
     # detpath = r'PATH_TO_BE_CONFIGURED/Task1_{:s}.txt'
     # annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
     # imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
 
     # For demo
-    classnames = ['harbor', 'large-vehicle', 'ship', 'small-vehicle']
+    #classnames = ['harbor', 'large-vehicle', 'ship', 'small-vehicle']
     # For DOTA-v1.5
-    # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
-    #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', 'container-crane']
+    classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
+                'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', 'container-crane']
      # For DOTA-v1.0
     # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
     #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', ']

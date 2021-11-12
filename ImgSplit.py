@@ -36,9 +36,9 @@ class splitbase():
                  basepath,
                  outpath,
                  code = 'utf-8',
-                 gap=200,
+                 gap=100,
                  subsize=1024,
-                 thresh=0.5,
+                 thresh=0.7,
                  choosebestpoint=True,
                  ext = '.png'
                  ):
@@ -236,13 +236,10 @@ class splitbase():
         imagelist = GetFileFromThisRootDir(self.imagepath)
         imagenames = [util.custombasename(x) for x in imagelist if (util.custombasename(x) != 'Thumbs')]
         for name in imagenames:
-            print(name)
             self.SplitSingle(name, rate, self.ext)
 
 if __name__ == '__main__':
     # example usage of ImgSplit
-    split = splitbase('./example/',
-                       './example_split/')
-    #scales = [0.5, 0.8, 1, 1.2, 1.5]
-    #for scale in scales:
+    split = splitbase(r'example',
+                       r'examplesplit')
     split.splitdata(1)

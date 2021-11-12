@@ -75,9 +75,9 @@ class splitbase():
         self.slide = self.subsize - self.gap
         self.thresh = thresh
         self.imagepath = os.path.join(self.basepath, 'images')
-        self.labelpath = os.path.join(self.basepath, 'labelTxt')
+        self.labelpath = os.path.join(self.basepath, 'labels')
         self.outimagepath = os.path.join(self.outpath, 'images')
-        self.outlabelpath = os.path.join(self.outpath, 'labelTxt')
+        self.outlabelpath = os.path.join(self.outpath, 'labels')
         self.choosebestpoint = choosebestpoint
         self.ext = ext
         self.padding = padding
@@ -219,6 +219,7 @@ class splitbase():
         :param extent: the image format
         :return:
         """
+        print("processing" + name)
         img = cv2.imread(os.path.join(self.imagepath, name + extent))
         if np.shape(img) == ():
             return
@@ -295,11 +296,11 @@ if __name__ == '__main__':
     #
     # d)
 
-    split = splitbase(r'example',
-                      r'example_split',
+    split = splitbase('/media/yanggang/data/DOTA/train',
+                      '/media/yanggang/data/DOTA_SPLIT/train',
                       gap=200,        # 重叠区域
                       subsize=1024,   # 被分割成的小图片的size
-                      num_process=8
+                      num_process=16
                       )
     split.splitdata(1)  # resize rate before cut
 

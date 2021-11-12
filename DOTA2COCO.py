@@ -6,6 +6,10 @@ import json
 wordname_15 = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
                'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter']
 
+classnames_v1_5 = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
+                'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', 'container-crane']
+
+
 def DOTA2COCO(srcpath, destfile):
     imageparent = os.path.join(srcpath, 'images')
     labelparent = os.path.join(srcpath, 'labelTxt')
@@ -49,7 +53,7 @@ def DOTA2COCO(srcpath, destfile):
             for obj in objects:
                 single_obj = {}
                 single_obj['area'] = obj['area']
-                single_obj['category_id'] = wordname_15.index(obj['name']) + 1
+                single_obj['category_id'] = classnames_v1_5.index(obj['name']) + 1
                 single_obj['segmentation'] = []
                 single_obj['segmentation'].append(obj['poly'])
                 single_obj['iscrowd'] = 0

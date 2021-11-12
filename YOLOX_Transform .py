@@ -86,7 +86,7 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
         img_w, img_h = img.size
         labels = img_fullname + ' '
         # print img_w,img_h
-        with open(os.path.join(dstpath, 'train2021.txt'), 'a') as f_out:
+        with open(os.path.join(dstpath, 'val2021.txt'), 'a') as f_out:
             num_gt = 0
             for i, obj in enumerate(objects):
                 num_gt = num_gt + 1  # 为当前有效gt计数
@@ -310,12 +310,12 @@ def delete(imgpath, txtpath):
 if __name__ == '__main__':
     ## an example
 
-    dota2LongSideFormat('/media/yanggang/data/DOTA_SPLIT/train/images',
-                        '/media/yanggang/data/DOTA_SPLIT/train/labels',
-                        '/media/yanggang/data/DOTA_SPLIT/train/yolox_labels',
+    dota2LongSideFormat('/home/yanggang/data/DOTA_SPLIT/val/images',
+                        '/home/yanggang/data/DOTA_SPLIT/val/labels',
+                        '/home/yanggang/data/DOTA_SPLIT/val/yolox_labels',
                         util.classnames_v1_5)
 
-    drawLongsideFormatimg(imgpath='/media/yanggang/data/DOTA_SPLIT/train/images',
-                          txtpath='/media/yanggang/data/DOTA_SPLIT/train/yolox_labels/train2021.txt',
-                          dstpath='/media/yanggang/data/DOTA_SPLIT/train/drawed_yolox_images',
+    drawLongsideFormatimg(imgpath='/home/yanggang/data/DOTA_SPLIT/val/images',
+                          txtpath='/home/yanggang/data/DOTA_SPLIT/val/yolox_labels/val2021.txt',
+                          dstpath='/home/yanggang/data/DOTA_SPLIT/val/drawed_yolox_images',
                           extractclassname=util.classnames_v1_5)
